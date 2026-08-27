@@ -2,10 +2,11 @@
 Theme Name: WP BBTheme Real Estate
 Description: Real-estate sector child for WP BBTheme with Property content and no WooCommerce dependency.
 Template: wp-bbtheme
-Version: 1.1.0
+Version: 2.0.0
 Requires at least: 6.6
+Tested up to: 7.1
 Requires PHP: 8.0
-Text Domain: wp-bbtheme-child-woo-realestate
+Text Domain: wp-bbtheme-child-realestate
 */
 
 :root{--sector-primary:#315c52;--sector-dark:#18332d;--sector-text:#24312e;--sector-muted:#66736f;--sector-surface:#f1f4f1;--sector-line:#dce4e0;--sector-radius:14px;--wp-brand-color:var(--sector-primary)!important;--wp-theme-primary:var(--sector-primary)!important;--tfa-brand-color:var(--sector-primary)!important}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#fff;color:var(--sector-text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body.menu-open{overflow:hidden}.wp-site-blocks{display:flex;min-height:100vh;flex-direction:column}.wp-site-blocks>main{flex:1}.container{width:min(1240px,calc(100% - 40px));max-width:1240px;margin-inline:auto}body.demo-homepage .wp-block-post-content,.wp-theme-sector-home{width:100%;max-width:none!important}
@@ -71,3 +72,7 @@ Text Domain: wp-bbtheme-child-woo-realestate
 .wp-theme-property-enquire{display:inline-flex;padding:13px 20px;border-radius:999px;background:var(--sector-primary);color:#fff;text-decoration:none;font-weight:750}
 @media(max-width:1100px){.wp-theme-property-search__main{grid-template-columns:2fr repeat(2,1fr)}.wp-theme-property-search__submit{min-height:54px}.wp-theme-property-more>div{grid-template-columns:repeat(2,1fr)}.wp-theme-property-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.wp-theme-property-search-section{margin-top:0;padding-top:20px}.wp-theme-property-finder{padding:20px;border-radius:16px}.wp-theme-property-finder__intro{display:block}.wp-theme-property-finder__intro h2{margin-bottom:14px}.wp-theme-property-tabs{padding:0}.wp-theme-property-tabs button{flex:1}.wp-theme-property-search__main,.wp-theme-property-more>div{grid-template-columns:1fr}.wp-theme-property-search__submit{min-height:50px}.wp-theme-property-grid{grid-template-columns:1fr}.wp-theme-property-grid.is-list .wp-theme-property-card{display:block}.wp-theme-property-results-head{align-items:flex-start}.wp-theme-property-summary dl{grid-template-columns:repeat(2,1fr)}}
+
+
+/* Real-estate editorial patterns */
+.wpbb-estate-areas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.wpbb-estate-area{min-height:210px;padding:28px;border:1px solid var(--sector-line);border-radius:var(--sector-radius);background:#fff}.wpbb-estate-area span{display:block;margin-bottom:48px;color:var(--sector-primary);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.wpbb-estate-area h3{font-family:Georgia,"Times New Roman",serif;font-size:30px;font-weight:500}.wpbb-estate-valuation{padding:clamp(34px,6vw,70px);border-radius:22px;background:#18332d;color:#fff}.wpbb-estate-valuation p{max-width:650px;color:#dbe7e2}.wpbb-estate-valuation .wp-block-button__link{background:#fff!important;color:#18332d!important}.wpbb-estate-proof{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center;padding-block:50px}.wpbb-estate-proof blockquote{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(28px,4vw,46px);line-height:1.15}@media(max-width:800px){.wpbb-estate-areas{grid-template-columns:1fr}.wpbb-estate-proof{grid-template-columns:1fr}}

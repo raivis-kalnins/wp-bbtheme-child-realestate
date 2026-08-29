@@ -1,8 +1,6 @@
-<?php
-/**
- * Title: Property agency hero
- * Slug: property-agency-hero
- * Categories: wp-patterns-main
- */
-?>
-<!-- wp:wpbb/row {"gutterX":"gx-5","gutterY":"gy-5","customClasses":"container wp-theme-sector-hero align-items-center"} --><!-- wp:wpbb/column {"xs":12,"lg":6} --><!-- wp:paragraph {"className":"wp-theme-sector-eyebrow"} --><p class="wp-theme-sector-eyebrow">London and Surrey property experts</p><!-- /wp:paragraph --><!-- wp:heading {"level":1} --><h1 class="wp-block-heading">Move with more confidence.</h1><!-- /wp:heading --><!-- wp:paragraph {"className":"wp-theme-sector-lead"} --><p class="wp-theme-sector-lead">A calm, editorial property hero built with WP BBuilder and native blocks.</p><!-- /wp:paragraph --><!-- /wp:wpbb/column --><!-- wp:wpbb/column {"xs":12,"lg":6} --><!-- wp:image --><figure class="wp-block-image"><img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/img/properties/willow-house.jpg' ); ?>" alt="Willow House exterior"/></figure><!-- /wp:image --><!-- /wp:wpbb/column --><!-- /wp:wpbb/row -->
+<?php /** Title: Property agency hero slider / Slug: wpbb-realestate/property-hero / Categories: wp-patterns-main, wp-theme-current */
+$slides=array(
+ array('type'=>'hero','eyebrow'=>'Local property specialists','title'=>'Find a home that fits the life around it.','text'=>'Search homes, understand neighbourhoods and arrange a viewing with a focused local team.','buttonText'=>'Browse properties','buttonUrl'=>'/properties/','image'=>get_stylesheet_directory_uri().'/assets/img/properties/oak-residence.jpg'),
+ array('type'=>'hero','eyebrow'=>'Sell with confidence','title'=>'Clear advice from valuation to completion.','text'=>'Useful filters, strong local content and a calm route from first browse to the next conversation.','buttonText'=>'Request a valuation','buttonUrl'=>'/contact/','image'=>get_stylesheet_directory_uri().'/assets/img/properties/riverside-loft.jpg')
+); $attrs=array('slides'=>$slides,'slidesPerView'=>1,'slidesTablet'=>1,'slidesMobile'=>1,'spaceBetween'=>0,'speed'=>700,'rewind'=>true,'autoplay'=>true,'autoplayDelay'=>6500,'pauseOnHover'=>true,'effect'=>'slide','demoStyle'=>'hero','showPagination'=>true,'showNavigation'=>true); ?>
+<!-- wp:wpbb/row {"containerClass":"container","customClasses":"wp-theme-sector-hero"} --><!-- wp:wpbb/column {"xs":12} --><?php echo '<!-- wp:wpbb/swiper '.wp_json_encode($attrs,JSON_UNESCAPED_SLASHES).' /-->'; ?><!-- /wp:wpbb/column --><!-- /wp:wpbb/row -->

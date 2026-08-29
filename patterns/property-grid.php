@@ -1,8 +1,2 @@
-<?php
-/**
- * Title: Featured properties grid
- * Slug: featured-properties-grid
- * Categories: wp-patterns-main-core
- */
-?>
-<!-- wp:group {"className":"container wp-theme-sector-section"} --><div class="wp-block-group container wp-theme-sector-section"><!-- wp:shortcode -->[wp_theme_property_search limit="6"]<!-- /wp:shortcode --></div><!-- /wp:group -->
+<?php /** Title: Property finder / Slug: wpbb-realestate/property-grid / Categories: wp-patterns-main, wp-theme-current */ ?>
+<!-- wp:group {"className":"wp-theme-section-shell property-finder-pattern","layout":{"type":"default"}} --><div class="wp-block-group wp-theme-section-shell property-finder-pattern"><!-- wp:wpbb/row {"containerClass":"container","customClasses":"wp-theme-section-heading"} --><!-- wp:wpbb/column {"xs":12,"lg":8} --><!-- wp:paragraph {"className":"wp-theme-sector-eyebrow"} --><p class="wp-theme-sector-eyebrow">Current listings</p><!-- /wp:paragraph --><!-- wp:heading --><h2 class="wp-block-heading">Find the right property faster.</h2><!-- /wp:heading --><!-- /wp:wpbb/column --><!-- /wp:wpbb/row --><!-- wp:wpbb/row {"containerClass":"container"} --><!-- wp:wpbb/column {"xs":12} --><!-- wp:shortcode -->[wp_theme_property_search limit="6"]<!-- /wp:shortcode --><!-- /wp:wpbb/column --><!-- /wp:wpbb/row --></div><!-- /wp:group -->

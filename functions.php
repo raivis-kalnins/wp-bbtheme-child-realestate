@@ -10,7 +10,7 @@ function wpbb_realestate_needs_search_assets() {
 	if ( is_singular() ) {
 		$post_id = get_queried_object_id();
 		$content = $post_id ? (string) get_post_field( 'post_content', $post_id ) : '';
-		return has_shortcode( $content, 'wp_theme_property_search' ) || has_shortcode( $content, 'wp_theme_properties' );
+		return has_shortcode( $content, 'wp_theme_property_search' ) || has_shortcode( $content, 'wp_theme_properties' ) || has_block( 'wpbb/sector-finder', $content );
 	}
 	return false;
 }
@@ -247,9 +247,16 @@ add_action( 'wp_ajax_wpbb_property_search', 'wpbb_realestate_ajax_search' );
 add_action( 'wp_ajax_nopriv_wpbb_property_search', 'wpbb_realestate_ajax_search' );
 
 function wpbb_realestate_home_search( $content ) {
-	return $content . '<!-- wp:group {"className":"wp-theme-property-search-section"} --><div class="wp-block-group wp-theme-property-search-section"><div class="container"><!-- wp:shortcode -->[wp_theme_property_search limit="6"]<!-- /wp:shortcode --></div></div><!-- /wp:group -->';
+	return $content . '<!-- wp:group {"className":"wp-theme-property-search-section"} --><div class="wp-block-group wp-theme-property-search-section"><div class="container"><!-- wp:wpbb/sector-finder {"context":"realestate","limit":6} /--></div></div><!-- /wp:group -->';
 }
 add_filter( 'wp_theme_demo_after_hero_sections', 'wpbb_realestate_home_search' );
+
+function wpbb_realestate_sector_finder_render_v37( $html, $context, $attributes ) {
+    if ( 'realestate' !== $context ) return $html;
+    return wpbb_realestate_properties_shortcode( array( 'limit' => absint( $attributes['limit'] ?? 6 ) ) );
+}
+add_filter( 'wp_theme_sector_finder_render', 'wpbb_realestate_sector_finder_render_v37', 20, 3 );
+
 
 function wpbb_realestate_menu_item( $items ) {
 	$item = array(
@@ -371,3 +378,13 @@ function wpbb_realestate_mega_menu_definitions( $definitions, $profile ) {
 	return $definitions;
 }
 add_filter( 'wp_theme_demo_mega_menu_definitions', 'wpbb_realestate_mega_menu_definitions', 20, 2 );
+
+/** v3.5 sector editorial labels. */
+function wpbb_realestate_blog_profile_v35( $profile ) {
+    if ( ( $profile['id'] ?? '' ) !== 'realestate' ) return $profile;
+    $profile['blog_eyebrow'] = __( 'Property journal', 'wp-bbtheme-child-realestate' );
+    $profile['blog_archive_title'] = __( 'Market insight, area guides and practical property advice.', 'wp-bbtheme-child-realestate' );
+    $profile['blog_archive_intro'] = __( 'Useful guidance for buyers, sellers, landlords and anyone planning their next move.', 'wp-bbtheme-child-realestate' );
+    return $profile;
+}
+add_filter( 'wp_theme_demo_profile', 'wpbb_realestate_blog_profile_v35', 90 );

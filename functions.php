@@ -151,7 +151,7 @@ function wpbb_realestate_seed_properties() {
 	foreach ( $properties as $index => $item ) {
 		$post_slug = 'demo-property-' . ( $index + 1 );
 		$post = get_page_by_path( $post_slug, OBJECT, 'property' );
-		$args = array( 'post_title' => $item['title'], 'post_name' => $post_slug, 'post_status' => 'publish', 'post_type' => 'property', 'menu_order' => $index, 'post_excerpt' => sprintf( __( 'A beautifully presented %1$d bedroom home in %2$s.', 'wp-bbtheme-child-realestate' ), $item['beds'], $item['location'] ), 'post_content' => '<!-- wp:heading {"level":2} --><h2 class="wp-block-heading">' . esc_html__( 'About this property', 'wp-bbtheme-child-realestate' ) . '</h2><!-- /wp:heading --><!-- wp:paragraph --><p>' . esc_html__( 'A light, carefully maintained home with well-planned living space, useful storage and excellent connections. Replace this demo description with the full particulars, floor plan and viewing information.', 'wp-bbtheme-child-realestate' ) . '</p><!-- /wp:paragraph -->' );
+		$args = array( 'post_title' => $item['title'], 'post_name' => $post_slug, 'post_status' => 'publish', 'post_type' => 'property', 'menu_order' => $index, 'post_excerpt' => sprintf( __( 'A beautifully presented %1$d bedroom home in %2$s.', 'wp-bbtheme-child-realestate' ), $item['beds'], $item['location'] ), 'post_content' => '<!-- wp:heading {"level":2} --><h2 class="wp-block-heading">' . esc_html__( 'About this property', 'wp-bbtheme-child-realestate' ) . '</h2><!-- /wp:heading --><!-- wp:paragraph --><p>' . esc_html__( 'A light, carefully maintained home with well-planned living space, useful storage and excellent local connections. Full particulars, floor-plan information and viewing arrangements are available from the team.', 'wp-bbtheme-child-realestate' ) . '</p><!-- /wp:paragraph -->' );
 		if ( $post instanceof WP_Post ) { $args['ID'] = $post->ID; $id = wp_update_post( $args ); } else { $id = wp_insert_post( $args ); }
 		if ( ! $id || is_wp_error( $id ) ) { continue; }
 		wp_set_object_terms( $id, $item['type'], 'property_type' );
@@ -204,7 +204,7 @@ function wpbb_realestate_card_markup( $post_id ) {
 	$baths = absint( get_post_meta( $post_id, 'property_bathrooms', true ) ); $size = absint( get_post_meta( $post_id, 'property_size', true ) );
 	$listing = get_post_meta( $post_id, 'property_listing_type', true ); $status = get_post_meta( $post_id, 'property_marketing_status', true );
 	$place = trim( get_post_meta( $post_id, 'property_location', true ) . ' ' . get_post_meta( $post_id, 'property_postcode', true ) );
-	$image = get_the_post_thumbnail( $post_id, 'large', array( 'loading' => 'lazy' ) );
+	$image = function_exists( 'wp_theme_item_gallery_card_inner' ) ? wp_theme_item_gallery_card_inner( $post_id, 'large', 4 ) : get_the_post_thumbnail( $post_id, 'large', array( 'loading' => 'lazy' ) );
 	if ( ! $image ) { $image = '<span class="wp-theme-property-card__placeholder" aria-hidden="true"></span>'; }
 	$price_label = 'rent' === $listing ? sprintf( __( '£%s pcm', 'wp-bbtheme-child-realestate' ), number_format_i18n( $price ) ) : '£' . number_format_i18n( $price );
 	return '<article class="wp-theme-property-card" data-property-id="' . esc_attr( $post_id ) . '"><div class="wp-theme-property-card__media"><a class="wp-theme-property-card__image" href="' . esc_url( get_permalink( $post_id ) ) . '">' . $image . '</a><span class="wp-theme-property-card__status">' . esc_html( $status ) . '</span><button class="wp-theme-property-save" type="button" data-save-property="' . esc_attr( $post_id ) . '" aria-label="' . esc_attr__( 'Save property', 'wp-bbtheme-child-realestate' ) . '" aria-pressed="false">♡</button></div><div class="wp-theme-property-card__body"><p class="wp-theme-property-card__type">' . esc_html( $type ) . '</p><p class="wp-theme-property-card__price">' . esc_html( $price_label ) . '</p><h3><a href="' . esc_url( get_permalink( $post_id ) ) . '">' . esc_html( get_the_title( $post_id ) ) . '</a></h3><p class="wp-theme-property-card__location">' . esc_html( $place ) . '</p><div class="wp-theme-property-card__facts"><span>' . esc_html( sprintf( _n( '%d bed', '%d beds', $beds, 'wp-bbtheme-child-realestate' ), $beds ) ) . '</span><span>' . esc_html( sprintf( _n( '%d bath', '%d baths', $baths, 'wp-bbtheme-child-realestate' ), $baths ) ) . '</span><span>' . esc_html( number_format_i18n( $size ) . ' sq ft' ) . '</span></div></div></article>';
@@ -278,6 +278,7 @@ function wpbb_realestate_single_details( $content ) {
 	$price   = absint( get_post_meta( $id, 'property_price', true ) );
 	$price   = 'rent' === $listing ? '£' . number_format_i18n( $price ) . ' pcm' : '£' . number_format_i18n( $price );
 	$image   = get_the_post_thumbnail_url( $id, 'full' );
+	$gallery = function_exists( 'wp_theme_item_gallery_single_markup' ) ? wp_theme_item_gallery_single_markup( $id ) : '';
 	$place   = trim( get_post_meta( $id, 'property_location', true ) . ' ' . get_post_meta( $id, 'property_postcode', true ) );
 	$status  = get_post_meta( $id, 'property_marketing_status', true );
 
@@ -286,7 +287,8 @@ function wpbb_realestate_single_details( $content ) {
 	$html  = '<article class="wp-theme-property-single"><div class="container">';
 	$html .= '<div class="wp-theme-property-single__heading motion-fade-up"><p class="wp-theme-sector-eyebrow">' . esc_html( $place ) . '</p><h1>' . esc_html( get_the_title( $id ) ) . '</h1></div>';
 	$html .= '<div class="row g-4 g-xl-5 align-items-start"><div class="col-12 col-xl-8">';
-	if ( $image ) $html .= '<figure class="wp-theme-property-single__media motion-fade-up"><img src="' . esc_url( $image ) . '" alt="' . esc_attr( get_the_title( $id ) ) . '"></figure>';
+	if ( $gallery ) $html .= $gallery;
+	elseif ( $image ) $html .= '<figure class="wp-theme-property-single__media motion-fade-up"><img src="' . esc_url( $image ) . '" alt="' . esc_attr( get_the_title( $id ) ) . '"></figure>';
 	$html .= '<div class="wp-theme-property-single__content motion-fade-up"><h2>' . esc_html__( 'About this property', 'wp-bbtheme-child-realestate' ) . '</h2>' . $content . '</div></div>';
 	$html .= '<div class="col-12 col-xl-4">' . $summary . '</div></div></div></article>';
 	return $html;
@@ -296,9 +298,9 @@ add_filter( 'the_content', 'wpbb_realestate_single_details', 15 );
 function wpbb_realestate_demo_profile_premium( $profile ) {
 	if ( empty( $profile['id'] ) || 'realestate' !== $profile['id'] ) { return $profile; }
 	$profile['about_title'] = __( 'Local property knowledge, presented with less noise.', 'wp-bbtheme-child-realestate' );
-	$profile['about_text'] = __( 'A search-led property starter with useful area context, clear listing information and a calm path from first browse to valuation or viewing.', 'wp-bbtheme-child-realestate' );
+	$profile['about_text'] = __( 'Search-led property discovery with useful area context, clear listing information and a calm path from first browse to valuation or viewing.', 'wp-bbtheme-child-realestate' );
 	$profile['stats'] = array(
-		array( '10', __( 'Complete demo listings', 'wp-bbtheme-child-realestate' ) ),
+		array( '10', __( 'Available listings', 'wp-bbtheme-child-realestate' ) ),
 		array( '3', __( 'Area-guide examples', 'wp-bbtheme-child-realestate' ) ),
 		array( '7', __( 'Useful finder controls', 'wp-bbtheme-child-realestate' ) ),
 		array( '0', __( 'WooCommerce dependencies', 'wp-bbtheme-child-realestate' ) ),
@@ -310,7 +312,7 @@ function wpbb_realestate_demo_profile_premium( $profile ) {
 	);
 	$profile['cta_title'] = __( 'Thinking about your next move?', 'wp-bbtheme-child-realestate' );
 	$profile['cta_text'] = __( 'Start with a straightforward valuation or tell the team what you are looking for.', 'wp-bbtheme-child-realestate' );
-	$profile['footer_text'] = __( 'A modern non-commerce property starter for estate agencies, lettings teams and local property specialists.', 'wp-bbtheme-child-realestate' );
+	$profile['footer_text'] = __( 'Local property search, sales and lettings support for buyers, sellers, landlords and tenants.', 'wp-bbtheme-child-realestate' );
 	$profile['page_labels'] = array( 'about' => __( 'About', 'wp-bbtheme-child-realestate' ), 'services' => __( 'Selling & letting', 'wp-bbtheme-child-realestate' ), 'industries' => __( 'Area guides', 'wp-bbtheme-child-realestate' ), 'contact' => __( 'Contact', 'wp-bbtheme-child-realestate' ), 'blog' => __( 'Property journal', 'wp-bbtheme-child-realestate' ) );
 	return $profile;
 }

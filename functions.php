@@ -133,7 +133,7 @@ function wpbb_realestate_demo_image_attachment( $slug, $title ) {
 	$id = wp_insert_attachment( array( 'post_mime_type' => 'image/jpeg', 'post_title' => $title, 'post_name' => $attachment_slug, 'post_status' => 'inherit', 'guid' => trailingslashit( $upload['url'] ) . $filename ), $target );
 	if ( is_wp_error( $id ) ) { return 0; }
 	require_once ABSPATH . 'wp-admin/includes/image.php';
-	wp_update_attachment_metadata( $id, wp_generate_attachment_metadata( $id, $target ) );
+	wp_update_attachment_metadata( $id, wpbb_child_381048_generate_attachment_metadata( $id, $target ) );
 	return (int) $id;
 }
 
@@ -679,7 +679,7 @@ function wpbb_realestate_demo_blog_photo_attachment( $filename, $title ) {
     ), $target );
     if ( $id && ! is_wp_error( $id ) ) {
         if ( ! function_exists( 'wp_generate_attachment_metadata' ) ) require_once ABSPATH . 'wp-admin/includes/image.php';
-        $meta = wp_generate_attachment_metadata( $id, $target );
+        $meta = wpbb_child_381048_generate_attachment_metadata( $id, $target );
         if ( $meta ) wp_update_attachment_metadata( $id, $meta );
         update_post_meta( $id, '_wp_attachment_image_alt', $title );
         return (int) $id;
@@ -771,7 +771,7 @@ function wpbb_realestate_refresh_bundled_attachment_v381041( $attachment_id, $as
         }
     }
 
-    $meta = wp_generate_attachment_metadata( $attachment_id, $target );
+    $meta = wpbb_child_381048_generate_attachment_metadata( $attachment_id, $target );
     if ( $meta ) wp_update_attachment_metadata( $attachment_id, $meta );
     clean_attachment_cache( $attachment_id );
     return true;
@@ -808,7 +808,7 @@ function wpbb_realestate_realistic_media_upgrade_v381041() {
         $target = get_attached_file( $attachment_id );
         if ( $target && @copy( $source, $target ) ) {
             if ( ! function_exists( 'wp_generate_attachment_metadata' ) ) require_once ABSPATH . 'wp-admin/includes/image.php';
-            $meta = wp_generate_attachment_metadata( $attachment_id, $target );
+            $meta = wpbb_child_381048_generate_attachment_metadata( $attachment_id, $target );
             if ( $meta ) wp_update_attachment_metadata( $attachment_id, $meta );
         }
     }

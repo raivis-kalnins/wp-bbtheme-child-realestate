@@ -1,0 +1,300 @@
+/* 3.8.11.38 Real Estate: stable content shell, grid ownership and media treatment. */
+:root{
+  --wpbb-re-shell:1180px;
+  --wpbb-re-gap:24px;
+  --wpbb-re-section-y:clamp(56px,6vw,84px);
+  --wpbb-re-line:#dfe7e2;
+  --wpbb-re-ink:#102c57;
+}
+html body.wpbb-v138-theme-realestate #wp-theme-main{overflow:hidden}
+
+/* A Real Estate demo never owns the Automotive/Woo home-shop section. Hiding a
+   stale imported shop immediately prevents the extremely narrow/tall cards
+   while the one-time content migration replaces the page. */
+html body.wpbb-v138-theme-realestate #wp-theme-main .wp-theme-shop-section,
+html body.wpbb-v138-theme-realestate #wp-theme-main .wp-theme-home-product-catalogue,
+html body.wpbb-v138-theme-realestate #wp-theme-main :is(section,.wp-theme-section-shell):has(.wp-theme-home-product-catalogue){display:none!important}
+
+/* One shell owner for every non-hero section, including rich parent-demo sections. */
+html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-shell{
+  box-sizing:border-box!important;
+  width:min(calc(100% - 48px),var(--wpbb-re-shell))!important;
+  max-width:var(--wpbb-re-shell)!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  padding-left:0!important;
+  padding-right:0!important;
+}
+
+/* Full-width section bands with one consistent inner edge. */
+html body.wpbb-v138-theme-realestate #wp-theme-main .wp-theme-section-shell,
+html body.wpbb-v138-theme-realestate #wp-theme-main .wp-theme-home-stats,
+html body.wpbb-v138-theme-realestate #wp-theme-main .wp-theme-gallery-section{
+  box-sizing:border-box;
+  width:100%;
+}
+html body.wpbb-v138-theme-realestate #wp-theme-main .wp-theme-section-shell:not(.wpbb-v138-hero-shell){padding-block:var(--wpbb-re-section-y)!important}
+html body.wpbb-v138-theme-realestate #wp-theme-main :is(
+  .wp-theme-section-shell:not(.wpbb-v138-hero-shell),
+  .wp-theme-home-stats,
+  .wp-theme-sector-proof,
+  .wp-theme-gallery-section,
+  .wp-theme-home-cta
+) > :is(.container,.wp-block-group__inner-container){
+  box-sizing:border-box!important;
+  width:min(calc(100% - 48px),var(--wpbb-re-shell))!important;
+  max-width:var(--wpbb-re-shell)!important;
+  margin-inline:auto!important;
+  padding-inline:0!important;
+}
+html body.wpbb-v138-theme-realestate #wp-theme-main :is(.wp-theme-section-heading,.wpbb-v138-heading){
+  box-sizing:border-box!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0 0 30px!important;
+}
+html body.wpbb-v138-theme-realestate #wp-theme-main .wp-theme-section-heading > *{max-width:100%!important}
+
+/* Neutralise stale v136/v137 section-level grid promotion. These classes can
+   remain in cached markup but must never make a whole section a card grid. */
+html body.wpbb-v138-theme-realestate #wp-theme-main :is(
+  .wp-theme-home-product-catalogue,
+  .wp-theme-services-section,
+  .wp-theme-industries-section,
+  .wp-theme-process-section,
+  .wp-theme-gallery-section,
+  .wp-theme-insights-section
+).wpbb-v136-grid,
+html body.wpbb-v138-theme-realestate #wp-theme-main :is(
+  .wp-theme-home-product-catalogue,
+  .wp-theme-services-section,
+  .wp-theme-industries-section,
+  .wp-theme-process-section,
+  .wp-theme-gallery-section,
+  .wp-theme-insights-section
+).wpbb-v137-grid{
+  display:block!important;
+  grid-template-columns:none!important;
+  gap:0!important;
+}
+
+/* v138 only promotes actual rows/list hosts whose direct children are cards. */
+html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-grid{
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-auto-rows:1fr!important;
+  gap:var(--wpbb-re-gap)!important;
+  align-items:stretch!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  list-style:none!important;
+}
+html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-grid > .wpbb-v138-grid-cell{
+  box-sizing:border-box!important;
+  float:none!important;
+  clear:none!important;
+  min-width:0!important;
+  width:auto!important;
+  max-width:none!important;
+  height:auto!important;
+  margin:0!important;
+  padding:0!important;
+  flex:none!important;
+  align-self:stretch!important;
+}
+html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-grid > .wpbb-v138-grid-cell > *{max-width:100%!important}
+@media(min-width:720px){
+  html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-grid:is(.wpbb-v138-cols-3,.wpbb-v138-cols-4){grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-grid.wpbb-v138-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(min-width:1040px){
+  html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-grid.wpbb-v138-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-grid.wpbb-v138-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-grid.wpbb-v138-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+}
+
+/* Equal card heights without changing component internals. */
+html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-grid :is(
+  .wp-theme-sector-card,.wpbb-icon-card,.wpbb-card,.card,
+  .wp-theme-property-card,.wp-theme-case-card,.wp-theme-blog-card,
+  .wp-theme-blog-list-card,.wp-theme-project-card,.wp-theme-gallery-card,
+  .wpbb-directory-card,.wpbb-fun-fact
+){
+  box-sizing:border-box!important;
+  width:100%!important;
+  max-width:none!important;
+  height:100%!important;
+  margin:0!important;
+}
+
+/* Listing/editorial media uses one 4:3 crop and no browser filters/scaling. */
+html body.wpbb-v138-theme-realestate #wp-theme-main :is(
+  .wp-theme-property-card__image,
+  .wp-theme-item-gallery-card__main,
+  .wp-theme-case-card__media,
+  .wp-theme-blog-card .wp-block-post-featured-image,
+  .wp-theme-project-card__media,
+  .wp-theme-gallery-card__media
+){
+  display:block!important;
+  width:100%!important;
+  aspect-ratio:4/3!important;
+  overflow:hidden!important;
+}
+html body.wpbb-v138-theme-realestate #wp-theme-main :is(
+  .wp-theme-property-card__image,
+  .wp-theme-item-gallery-card__main,
+  .wp-theme-case-card__media,
+  .wp-theme-blog-card .wp-block-post-featured-image,
+  .wp-theme-project-card__media,
+  .wp-theme-gallery-card__media
+) img,
+html body.wpbb-v138-theme-realestate #wp-theme-main img.wpbb-v138-card-image{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  opacity:1!important;
+  filter:none!important;
+  transform:none!important;
+  image-rendering:auto!important;
+}
+html body.wpbb-v138-theme-realestate #wp-theme-main :is(.wp-theme-sector-media-text__media,.wp-theme-sector-page-image){
+  overflow:hidden!important;
+  border-radius:inherit;
+}
+html body.wpbb-v138-theme-realestate #wp-theme-main :is(.wp-theme-sector-media-text__media,.wp-theme-sector-page-image) img{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  aspect-ratio:4/3!important;
+  height:auto!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  filter:none!important;
+  image-rendering:auto!important;
+}
+
+/* Stable full-bleed hero. */
+html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-hero-shell{
+  position:relative!important;
+  left:50%!important;
+  width:100vw!important;
+  max-width:none!important;
+  margin-left:-50vw!important;
+  margin-right:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border:0!important;
+  background:#fff!important;
+}
+html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-hero{
+  position:relative!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border-radius:0!important;
+  background:#fff!important;
+}
+html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-hero :is(.swiper-slide,.wpbb-swiper-slide){
+  position:relative!important;
+  box-sizing:border-box!important;
+  min-height:540px!important;
+  height:540px!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:#fff!important;
+}
+html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-hero :is(.wpbb-swiper-slide__content,.wp-theme-hero__content,.wpbb-hero-content){
+  position:relative!important;
+  z-index:5!important;
+  box-sizing:border-box!important;
+  width:min(50%,650px)!important;
+  max-width:650px!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:70px 32px 82px max(28px,calc((100vw - var(--wpbb-re-shell))/2))!important;
+}
+html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-hero :is(.wpbb-swiper-slide__media,.wp-theme-hero__media,.wpbb-hero-media){
+  position:absolute!important;
+  z-index:1!important;
+  inset:0 0 0 auto!important;
+  width:70%!important;
+  height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:#eef3ef!important;
+}
+html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-hero :is(.wpbb-swiper-slide__media,.wp-theme-hero__media,.wpbb-hero-media)::after{
+  content:""!important;
+  position:absolute!important;
+  z-index:2!important;
+  inset:0!important;
+  pointer-events:none!important;
+  background:linear-gradient(90deg,#fff 0%,rgba(255,255,255,.99) 10%,rgba(255,255,255,.92) 22%,rgba(255,255,255,.62) 35%,rgba(255,255,255,.18) 49%,rgba(255,255,255,0) 62%)!important;
+}
+html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-hero :is(.wpbb-swiper-slide__media,.wp-theme-hero__media,.wpbb-hero-media) img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  min-width:100%!important;
+  margin:0!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  opacity:1!important;
+  filter:none!important;
+  transform:none!important;
+  image-rendering:auto!important;
+}
+html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-duplicate-hero{display:none!important}
+
+/* If stale catalogue markup survives an aggressive cache, keep it sane rather
+   than allowing vertical one-character cards. */
+html body.wpbb-v138-theme-realestate #wp-theme-main .wp-theme-home-product-catalogue > :is(.row,.wpbb-row),
+html body.wpbb-v138-theme-realestate #wp-theme-main :is(.woocommerce ul.products,.iws-products-grid){
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:var(--wpbb-re-gap)!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+}
+html body.wpbb-v138-theme-realestate #wp-theme-main .wp-theme-home-product-catalogue > :is(.row,.wpbb-row) > *,
+html body.wpbb-v138-theme-realestate #wp-theme-main :is(.woocommerce ul.products,.iws-products-grid) > *{
+  box-sizing:border-box!important;
+  float:none!important;
+  width:auto!important;
+  max-width:none!important;
+  min-width:0!important;
+  margin:0!important;
+  writing-mode:horizontal-tb!important;
+}
+@media(max-width:1039px){
+  html body.wpbb-v138-theme-realestate #wp-theme-main .wp-theme-home-product-catalogue > :is(.row,.wpbb-row),
+  html body.wpbb-v138-theme-realestate #wp-theme-main :is(.woocommerce ul.products,.iws-products-grid){grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:719px){
+  html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-shell{width:min(calc(100% - 32px),var(--wpbb-re-shell))!important}
+  html body.wpbb-v138-theme-realestate #wp-theme-main :is(
+    .wp-theme-section-shell:not(.wpbb-v138-hero-shell),.wp-theme-home-stats,.wp-theme-sector-proof,.wp-theme-gallery-section,.wp-theme-home-cta
+  ) > :is(.container,.wp-block-group__inner-container){width:min(calc(100% - 32px),var(--wpbb-re-shell))!important}
+  html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-hero :is(.swiper-slide,.wpbb-swiper-slide){display:flex!important;flex-direction:column!important;height:auto!important;min-height:0!important}
+  html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-hero :is(.wpbb-swiper-slide__content,.wp-theme-hero__content,.wpbb-hero-content){order:1!important;width:100%!important;max-width:none!important;padding:38px 22px 32px!important}
+  html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-hero :is(.wpbb-swiper-slide__media,.wp-theme-hero__media,.wpbb-hero-media){position:relative!important;order:2!important;inset:auto!important;width:100%!important;height:290px!important}
+  html body.wpbb-v138-theme-realestate #wp-theme-main .wpbb-v138-hero :is(.wpbb-swiper-slide__media,.wp-theme-hero__media,.wpbb-hero-media)::after{background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,.72) 10%,rgba(255,255,255,0) 30%)!important}
+  html body.wpbb-v138-theme-realestate #wp-theme-main .wp-theme-home-product-catalogue > :is(.row,.wpbb-row),
+  html body.wpbb-v138-theme-realestate #wp-theme-main :is(.woocommerce ul.products,.iws-products-grid){grid-template-columns:minmax(0,1fr)!important}
+}

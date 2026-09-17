@@ -1,7 +1,7 @@
 {
   "name": "wp-bbtheme-child-realestate",
   "private": true,
-  "version": "3.8.11.00",
+  "version": "3.8.11.39",
   "type": "module",
   "scripts": {
     "dev": "node tools/build.mjs",

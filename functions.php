@@ -6,6 +6,12 @@ function wpbb_realestate_project_mode($mode){ return 'realestate'; }
 add_filter('wp_theme_project_mode','wpbb_realestate_project_mode');
 
 function wpbb_realestate_needs_search_assets() {
+	// The v141 homepage stores one deterministic owner shortcode; the property
+	// finder is rendered inside it, so direct shortcode inspection alone would
+	// miss the AJAX/search script on the front page.
+	if ( is_front_page() ) {
+		return true;
+	}
 	if ( is_post_type_archive( 'property' ) ) {
 		return true;
 	}
@@ -37,32 +43,125 @@ add_action('wp_head', 'wpbb_realestate_dark_mode_bootstrap', 1);
 function wpbb_realestate_search_assets(){ if(!wpbb_realestate_needs_search_assets()) return; $f=get_stylesheet_directory().'/assets/js/property-search.js'; if(is_readable($f)) wp_enqueue_script('wpbb-realestate-search',get_stylesheet_directory_uri().'/assets/js/property-search.js',array(),filemtime($f),true); }
 add_action('wp_enqueue_scripts','wpbb_realestate_search_assets',35);
 function wpbb_realestate_demo_profile( $profile ) {
-	$assets = trailingslashit( get_stylesheet_directory_uri() ) . 'assets/img/properties/';
-	return array_merge( $profile, array(
-		'id' => 'realestate', 'name' => __( 'Real Estate Agency', 'wp-bbtheme-child-realestate' ), 'commerce' => false,
-        'services_eyebrow' => __( 'Agency services', 'wp-bbtheme-child-realestate' ),
-        'services_heading' => __( 'Local advice for selling, buying, letting and valuation.', 'wp-bbtheme-child-realestate' ),
-        'about_eyebrow' => __( 'Local knowledge', 'wp-bbtheme-child-realestate' ),
-        'industries_eyebrow' => __( 'Property journeys', 'wp-bbtheme-child-realestate' ),
-        'industries_heading' => __( 'Property search and advice organised around the decision you are making.', 'wp-bbtheme-child-realestate' ),
-        'process_eyebrow' => __( 'From search to keys', 'wp-bbtheme-child-realestate' ),
-        'process_heading' => __( 'A clearer route from first enquiry to viewing, offer and move.', 'wp-bbtheme-child-realestate' ),
-        'faq_heading' => __( 'The questions people ask before they book a viewing.', 'wp-bbtheme-child-realestate' ),
-		'eyebrow' => __( 'London and Surrey property experts', 'wp-bbtheme-child-realestate' ),
-		'hero_title' => __( 'Find a home that fits the way you want to live.', 'wp-bbtheme-child-realestate' ),
-		'hero_text' => __( 'Search homes for sale and to rent, compare the details that matter and speak to a genuinely local team.', 'wp-bbtheme-child-realestate' ),
-		'hero_image' => $assets . 'willow-house.jpg', 'about_image' => $assets . 'cedar-cottage.jpg',
-		'primary_label' => __( 'Search properties', 'wp-bbtheme-child-realestate' ), 'primary_url' => '#properties',
-		'secondary_label' => __( 'Book a valuation', 'wp-bbtheme-child-realestate' ), 'secondary_url' => '#contact',
-		'industries' => array( __( 'Homes for sale', 'wp-bbtheme-child-realestate' ), __( 'New developments', 'wp-bbtheme-child-realestate' ), __( 'Lettings', 'wp-bbtheme-child-realestate' ), __( 'Valuations', 'wp-bbtheme-child-realestate' ) ),
-		'services' => array(
-			array( __( 'Buying', 'wp-bbtheme-child-realestate' ), __( 'Local insight and straightforward support from viewing to completion.', 'wp-bbtheme-child-realestate' ) ),
-			array( __( 'Selling', 'wp-bbtheme-child-realestate' ), __( 'Thoughtful presentation, realistic advice and a clear sales plan.', 'wp-bbtheme-child-realestate' ) ),
-			array( __( 'Lettings', 'wp-bbtheme-child-realestate' ), __( 'Practical management for landlords and responsive help for tenants.', 'wp-bbtheme-child-realestate' ) ),
+	$property_assets = trailingslashit( get_stylesheet_directory_uri() ) . 'assets/img/properties/';
+	$hero_assets     = trailingslashit( get_stylesheet_directory_uri() ) . 'assets/img/hero-v136/';
+
+	/*
+	 * Keep this profile complete. The parent demo builder passes its current
+	 * sector profile into this filter, so a partial array can leak content from
+	 * the previously active child theme (for example Automotive) into Real
+	 * Estate. Supplying every user-facing demo field makes theme switching and
+	 * reset/import deterministic.
+	 */
+	$realestate = array(
+		'id'                 => 'realestate',
+		'name'               => __( 'Real Estate Agency', 'wp-bbtheme-child-realestate' ),
+		'commerce'           => false,
+		'eyebrow'            => __( 'London and Surrey property experts', 'wp-bbtheme-child-realestate' ),
+		'hero_title'         => __( 'Find a home that fits the way you want to live.', 'wp-bbtheme-child-realestate' ),
+		'hero_text'          => __( 'Search homes for sale and to rent, compare the details that matter and speak to a genuinely local team.', 'wp-bbtheme-child-realestate' ),
+		'hero_image'         => $hero_assets . 'slide-1.jpg',
+		'about_image'        => $hero_assets . 'slide-2.jpg',
+		'primary_label'      => __( 'Search properties', 'wp-bbtheme-child-realestate' ),
+		'primary_url'        => '#properties',
+		'secondary_label'    => __( 'Book a valuation', 'wp-bbtheme-child-realestate' ),
+		'secondary_url'      => '#contact',
+		'services_eyebrow'   => __( 'Agency services', 'wp-bbtheme-child-realestate' ),
+		'services_heading'   => __( 'Local advice for buying, selling, letting and valuation.', 'wp-bbtheme-child-realestate' ),
+		'services'           => array(
+			array( __( 'Property finder', 'wp-bbtheme-child-realestate' ), __( 'Filter homes by location, budget, bedrooms and the practical details that matter.', 'wp-bbtheme-child-realestate' ) ),
+			array( __( 'Viewings', 'wp-bbtheme-child-realestate' ), __( 'Move from a shortlist to a viewing request without losing the property context.', 'wp-bbtheme-child-realestate' ) ),
+			array( __( 'Valuation & selling', 'wp-bbtheme-child-realestate' ), __( 'Get realistic local advice, clear presentation and a practical route to market.', 'wp-bbtheme-child-realestate' ) ),
+			array( __( 'Lettings', 'wp-bbtheme-child-realestate' ), __( 'Straightforward support for landlords and responsive information for tenants.', 'wp-bbtheme-child-realestate' ) ),
 		),
-	) );
+		'about_eyebrow'      => __( 'Local knowledge', 'wp-bbtheme-child-realestate' ),
+		'about_title'        => __( 'A property website that keeps useful context around every listing.', 'wp-bbtheme-child-realestate' ),
+		'about_text'         => __( 'Search, listing details, neighbourhood information and agent contact stay connected so buyers, renters and vendors can move forward without unnecessary friction.', 'wp-bbtheme-child-realestate' ),
+		'industries_eyebrow' => __( 'Property journeys', 'wp-bbtheme-child-realestate' ),
+		'industries_heading' => __( 'Property search and advice organised around the decision you are making.', 'wp-bbtheme-child-realestate' ),
+		'industries'         => array(
+			array( __( 'Buying a home', 'wp-bbtheme-child-realestate' ), __( 'Discovery, comparison, viewing and offer information in one clear journey.', 'wp-bbtheme-child-realestate' ) ),
+			array( __( 'Renting', 'wp-bbtheme-child-realestate' ), __( 'Availability, tenancy details and practical move-in information presented consistently.', 'wp-bbtheme-child-realestate' ) ),
+			array( __( 'Selling', 'wp-bbtheme-child-realestate' ), __( 'Valuation, marketing and instruction steps with realistic local guidance.', 'wp-bbtheme-child-realestate' ) ),
+			array( __( 'New developments', 'wp-bbtheme-child-realestate' ), __( 'Plot availability, specification and location context without a disconnected microsite.', 'wp-bbtheme-child-realestate' ) ),
+		),
+		'stats'              => array(
+			array( '24', __( 'demo listings', 'wp-bbtheme-child-realestate' ) ),
+			array( '6', __( 'useful search filters', 'wp-bbtheme-child-realestate' ) ),
+			array( '3', __( 'clear property journeys', 'wp-bbtheme-child-realestate' ) ),
+			array( '1', __( 'consistent viewing route', 'wp-bbtheme-child-realestate' ) ),
+		),
+		'process_eyebrow'    => __( 'From search to keys', 'wp-bbtheme-child-realestate' ),
+		'process_heading'    => __( 'A clearer route from first search to viewing, offer and move.', 'wp-bbtheme-child-realestate' ),
+		'process'            => array(
+			array( '01', __( 'Search', 'wp-bbtheme-child-realestate' ), __( 'Narrow the market by location, price and practical needs.', 'wp-bbtheme-child-realestate' ) ),
+			array( '02', __( 'Explore', 'wp-bbtheme-child-realestate' ), __( 'Review imagery, facts, availability and local information in context.', 'wp-bbtheme-child-realestate' ) ),
+			array( '03', __( 'Arrange', 'wp-bbtheme-child-realestate' ), __( 'Request a viewing, valuation or useful callback from the right team.', 'wp-bbtheme-child-realestate' ) ),
+		),
+		'faq_heading'        => __( 'The questions people ask before they book a viewing.', 'wp-bbtheme-child-realestate' ),
+		'faq'                => array(
+			array( __( 'Can listings show different property statuses?', 'wp-bbtheme-child-realestate' ), __( 'Yes. Available, under-offer, let-agreed and sold states can be shown clearly and consistently.', 'wp-bbtheme-child-realestate' ) ),
+			array( __( 'Can I request a viewing from a property page?', 'wp-bbtheme-child-realestate' ), __( 'Yes. Each listing can connect directly to a structured viewing enquiry with the property already identified.', 'wp-bbtheme-child-realestate' ) ),
+			array( __( 'Can local area content be reused?', 'wp-bbtheme-child-realestate' ), __( 'Yes. Area guidance can support several listings without duplicating the same neighbourhood content.', 'wp-bbtheme-child-realestate' ) ),
+		),
+		'gallery_eyebrow'    => __( 'Property gallery', 'wp-bbtheme-child-realestate' ),
+		'gallery_heading'    => __( 'Homes, neighbourhoods and details shown at a useful scale.', 'wp-bbtheme-child-realestate' ),
+		'gallery_images'     => array(
+			$hero_assets . 'slide-1.jpg',
+			$hero_assets . 'slide-2.jpg',
+			$hero_assets . 'slide-3.jpg',
+			$property_assets . 'harbour-house.jpg',
+		),
+		'priorities_heading' => __( 'What makes a property journey easier to trust.', 'wp-bbtheme-child-realestate' ),
+		'contact_heading'    => __( 'Talk about the property, move or viewing you need.', 'wp-bbtheme-child-realestate' ),
+		'contact_text'       => __( 'Tell us whether you are buying, selling, letting or arranging a viewing and we will route the enquiry to the right person.', 'wp-bbtheme-child-realestate' ),
+		'cta_title'          => __( 'Turn property browsing into a useful local conversation.', 'wp-bbtheme-child-realestate' ),
+		'cta_text'           => __( 'Search the current listings, arrange a viewing or ask for a clear valuation from the local team.', 'wp-bbtheme-child-realestate' ),
+		'footer_text'        => __( 'Local property search, sales and lettings support for buyers, sellers, landlords and tenants.', 'wp-bbtheme-child-realestate' ),
+		'blog_eyebrow'       => __( 'Property advice', 'wp-bbtheme-child-realestate' ),
+		'blog_archive_title' => __( 'Property guides and local insight', 'wp-bbtheme-child-realestate' ),
+		'blog_archive_intro' => __( 'Practical guidance for buyers, sellers, landlords and tenants.', 'wp-bbtheme-child-realestate' ),
+		'page_labels'        => array(
+			'about'      => __( 'About', 'wp-bbtheme-child-realestate' ),
+			'services'   => __( 'Services', 'wp-bbtheme-child-realestate' ),
+			'industries' => __( 'Property journeys', 'wp-bbtheme-child-realestate' ),
+			'contact'    => __( 'Contact', 'wp-bbtheme-child-realestate' ),
+		),
+	);
+
+	$realestate['hero_slides'] = array(
+		array(
+			'type'       => 'hero',
+			'eyebrow'    => $realestate['eyebrow'],
+			'title'      => $realestate['hero_title'],
+			'text'       => $realestate['hero_text'],
+			'buttonText' => $realestate['primary_label'],
+			'buttonUrl'  => $realestate['primary_url'],
+			'image'      => $hero_assets . 'slide-1.jpg',
+		),
+		array(
+			'type'       => 'hero',
+			'eyebrow'    => __( 'Local guidance', 'wp-bbtheme-child-realestate' ),
+			'title'      => $realestate['about_title'],
+			'text'       => $realestate['about_text'],
+			'buttonText' => $realestate['secondary_label'],
+			'buttonUrl'  => $realestate['secondary_url'],
+			'image'      => $hero_assets . 'slide-2.jpg',
+		),
+		array(
+			'type'       => 'hero',
+			'eyebrow'    => __( 'Property search', 'wp-bbtheme-child-realestate' ),
+			'title'      => __( 'Compare the homes that fit your next move.', 'wp-bbtheme-child-realestate' ),
+			'text'       => __( 'Keep price, bedrooms, location, status and viewing actions easy to scan from the first shortlist.', 'wp-bbtheme-child-realestate' ),
+			'buttonText' => $realestate['primary_label'],
+			'buttonUrl'  => $realestate['primary_url'],
+			'image'      => $hero_assets . 'slide-3.jpg',
+		),
+	);
+
+	return array_replace_recursive( is_array( $profile ) ? $profile : array(), $realestate );
 }
-add_filter( 'wp_theme_demo_profile', 'wpbb_realestate_demo_profile' );
+add_filter( 'wp_theme_demo_profile', 'wpbb_realestate_demo_profile', PHP_INT_MAX );
 
 function wpbb_realestate_register_content() {
 	register_post_type( 'property', array(
@@ -206,7 +305,25 @@ function wpbb_realestate_card_markup( $post_id ) {
 	$baths = absint( get_post_meta( $post_id, 'property_bathrooms', true ) ); $size = absint( get_post_meta( $post_id, 'property_size', true ) );
 	$listing = get_post_meta( $post_id, 'property_listing_type', true ); $status = get_post_meta( $post_id, 'property_marketing_status', true );
 	$place = trim( get_post_meta( $post_id, 'property_location', true ) . ' ' . get_post_meta( $post_id, 'property_postcode', true ) );
-	$image = function_exists( 'wp_theme_item_gallery_card_inner' ) ? wp_theme_item_gallery_card_inner( $post_id, 'large', 4 ) : get_the_post_thumbnail( $post_id, 'large', array( 'loading' => 'lazy' ) );
+	/*
+	 * Listing cards use one real featured image rather than the generic gallery
+	 * helper. The gallery helper adds an overlay strip of tiny thumbnails and
+	 * keeps the main image lazy, which is why full-page captures could show a
+	 * grey panel with only a row of thumbnails. Six cards are rendered on the
+	 * homepage, so eagerly loading the 1200x900 responsive crop is inexpensive
+	 * and makes the listing grid deterministic.
+	 */
+	$image = get_the_post_thumbnail(
+		$post_id,
+		'wpbb-realestate-card-xl',
+		array(
+			'class'         => 'wpbb-re-property-image',
+			'loading'       => 'eager',
+			'decoding'      => 'async',
+			'fetchpriority' => 'auto',
+			'sizes'         => '(min-width: 1040px) 377px, (min-width: 720px) calc(50vw - 36px), calc(100vw - 32px)',
+		)
+	);
 	if ( ! $image ) { $image = '<span class="wp-theme-property-card__placeholder" aria-hidden="true"></span>'; }
 	$price_label = 'rent' === $listing ? sprintf( __( '£%s pcm', 'wp-bbtheme-child-realestate' ), number_format_i18n( $price ) ) : '£' . number_format_i18n( $price );
 	return '<article class="wp-theme-property-card" data-property-id="' . esc_attr( $post_id ) . '"><div class="wp-theme-property-card__media"><a class="wp-theme-property-card__image" href="' . esc_url( get_permalink( $post_id ) ) . '">' . $image . '</a><span class="wp-theme-property-card__status">' . esc_html( $status ) . '</span><button class="wp-theme-property-save" type="button" data-save-property="' . esc_attr( $post_id ) . '" aria-label="' . esc_attr__( 'Save property', 'wp-bbtheme-child-realestate' ) . '" aria-pressed="false">♡</button></div><div class="wp-theme-property-card__body"><p class="wp-theme-property-card__type">' . esc_html( $type ) . '</p><p class="wp-theme-property-card__price">' . esc_html( $price_label ) . '</p><h3><a href="' . esc_url( get_permalink( $post_id ) ) . '">' . esc_html( get_the_title( $post_id ) ) . '</a></h3><p class="wp-theme-property-card__location">' . esc_html( $place ) . '</p><div class="wp-theme-property-card__facts"><span>' . esc_html( sprintf( _n( '%d bed', '%d beds', $beds, 'wp-bbtheme-child-realestate' ), $beds ) ) . '</span><span>' . esc_html( sprintf( _n( '%d bath', '%d baths', $baths, 'wp-bbtheme-child-realestate' ), $baths ) ) . '</span><span>' . esc_html( number_format_i18n( $size ) . ' sq ft' ) . '</span></div></div></article>';
@@ -1096,3 +1213,99 @@ require_once get_stylesheet_directory() . '/inc/v105-finish.php';
 
 // v3.8.11.07 final search, WooCommerce, Jobs captcha/grid and responsive repair.
 require_once get_stylesheet_directory() . '/inc/v107-finish.php';
+
+// v3.8.11.08 WooCommerce layout/polish and packaging finish.
+require_once get_stylesheet_directory() . '/inc/v108-finish.php';
+
+// v3.8.11.09 WooCommerce, media and account finalisation.
+require_once get_stylesheet_directory() . '/inc/v109-finish.php';
+
+// v3.8.11.10 media, WooCommerce, managed-page and route-facing finish.
+require_once get_stylesheet_directory() . '/inc/v110-finish.php';
+
+// v3.8.11.11 hero finder, editorial grid, mega-menu and image-quality finish.
+require_once get_stylesheet_directory() . '/inc/v111-finish.php';
+
+// v3.8.11.12 editorial grid, hero clarity and media recovery.
+require_once get_stylesheet_directory() . '/inc/v112-finish.php';
+
+// v3.8.11.13 final hero edge/clarity and editorial-grid alignment.
+require_once get_stylesheet_directory() . '/inc/v113-finish.php';
+
+// v3.8.11.14 child-only settings, editor, legal, editorial and hero finish.
+require_once get_stylesheet_directory() . '/inc/v114-finish.php';
+
+// v3.8.11.15 final mega-menu, hero/media, quote and BBuilder repair.
+require_once get_stylesheet_directory() . '/inc/v115-finish.php';
+
+// v3.8.11.16 reset-safe layout/media, mega-menu, consent and BBuilder finish.
+require_once get_stylesheet_directory() . '/inc/v116-finish.php';
+
+// v3.8.11.17 exact mega-menu placement, reset-safe BBuilder grid and immediate media recovery.
+require_once get_stylesheet_directory() . '/inc/v117-finish.php';
+
+
+// v3.8.11.18 reset-safe gutters, direct hero assets, nav-trigger mega positioning and cache finish.
+require_once get_stylesheet_directory() . '/inc/v118-finish.php';
+
+// v3.8.11.19 live regression repair: closer mega menus, canonical gutters/grids and no-flash consent.
+require_once get_stylesheet_directory() . '/inc/v119-finish.php';
+
+// v3.8.11.20 stable v119 rollback, restored gutters/grids and deterministic hero pagination/quality repair.
+require_once get_stylesheet_directory() . '/inc/v120-finish.php';
+
+// v3.8.11.21 scoped BBuilder grid recovery; retire v119/v120 global geometry while preserving hero quality/pagination.
+require_once get_stylesheet_directory() . '/inc/v121-finish.php';
+
+// v3.8.11.22 component-only grid-gap finish; keep v121 alignment and restore stable card/media/stat spacing.
+require_once get_stylesheet_directory() . '/inc/v122-finish.php';
+
+// v3.8.11.23 remaining basic grids/gaps + authoritative hero source/pagination finish.
+require_once get_stylesheet_directory() . '/inc/v123-finish.php';
+
+// v3.8.11.24 final basic visual hardening: deterministic card gaps, full-width fun-facts and one compact hero pager.
+require_once get_stylesheet_directory() . '/inc/v124-finish.php';
+
+// v3.8.11.25 final scoped grid, hero clarity and WooCommerce shop/cart/account finish.
+require_once get_stylesheet_directory() . '/inc/v125-final.php';
+
+// v3.8.11.26 final cross-theme component grids, hero image/pagination and process-card recovery.
+require_once get_stylesheet_directory() . '/inc/v126-final.php';
+
+// v3.8.11.27 final live-regression hardening: robust card grids, process-card shape, hero pagination and Business/Building hero fade.
+require_once get_stylesheet_directory() . '/inc/v127-final.php';
+
+// v3.8.11.28 final live component recovery: commerce grids, cart/checkout, process cards and stable hero media/pagination.
+require_once get_stylesheet_directory() . '/inc/v128-final.php';
+
+// v3.8.11.34 final cross-theme hero, grid, process and WooCommerce ownership layer.
+require_once get_stylesheet_directory() . '/inc/v134-final.php';
+
+
+// v3.8.11.35 final duplicate/process/hero cleanup.
+require_once get_stylesheet_directory() . '/inc/v135-final.php';
+
+// v3.8.11.36 full-width hero, stable process and cross-theme grid ownership.
+require_once get_stylesheet_directory() . '/inc/v136-final.php';
+
+// v3.8.11.37 real-estate alignment, consistent grids and crisp media.
+require_once get_stylesheet_directory() . '/inc/v137-final.php';
+
+// v3.8.11.38 sector-safe demo content and single stable layout owner.
+require_once get_stylesheet_directory() . '/inc/v138-final.php';
+
+// v3.8.11.39 real-estate homepage rebuild, legacy-layer retirement and final visual system.
+require_once get_stylesheet_directory() . '/inc/v139-final.php';
+
+// v3.8.11.40 Events-parity experiment is intentionally retired in v141.
+// v140 re-enabled older suite assets that conflict with the Real Estate v139 owner.
+
+// v3.8.11.41 deterministic Real Estate homepage owner: static hero/cards + isolated v139 base.
+require_once get_stylesheet_directory() . '/inc/v141-home-recovery.php';
+
+// v3.8.11.42 annotated visual polish: Events-style pager, sharper hero media,
+// finder/card alignment and explicit footer colour ownership.
+require_once get_stylesheet_directory() . '/inc/v142-visual-polish.php';
+
+// v3.8.11.43 Travel-theme hero parity: horizontal slider, 72% media pane and compact pager.
+require_once get_stylesheet_directory() . '/inc/v143-travel-hero.php';

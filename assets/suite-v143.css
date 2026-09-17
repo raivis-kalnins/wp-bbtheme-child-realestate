@@ -1,0 +1,230 @@
+/**
+ * Real Estate 3.8.11.43 — Travel-theme hero parity.
+ * The Travel child uses a 72% photographic pane with a soft white fade and a
+ * compact 8/24px pager. v143 applies the same geometry to the deterministic
+ * Real Estate hero and hard-resets inherited global button sizing.
+ */
+html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero {
+  min-height: 520px !important;
+  overflow: hidden !important;
+  background: #fff !important;
+}
+html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero__viewport {
+  min-height: 520px !important;
+  overflow: hidden !important;
+}
+html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re143-hero__track {
+  display: flex !important;
+  align-items: stretch !important;
+  width: 100% !important;
+  min-height: 520px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: translate3d(0,0,0);
+  transition: transform .56s cubic-bezier(.22,.61,.36,1);
+  will-change: transform;
+}
+html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero__slide[data-wpbb-re143-ready="1"] {
+  position: relative !important;
+  inset: auto !important;
+  z-index: 1 !important;
+  display: block !important;
+  flex: 0 0 100% !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  min-height: 520px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  transition: none !important;
+}
+html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero__slide[data-wpbb-re143-ready="1"]:not(.is-active) {
+  pointer-events: none !important;
+}
+html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero__slide[data-wpbb-re143-ready="1"].is-active {
+  z-index: 2 !important;
+  pointer-events: auto !important;
+}
+html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero__inner {
+  display: block !important;
+  box-sizing: border-box !important;
+  min-height: 520px !important;
+  margin-inline: auto !important;
+  position: relative !important;
+  z-index: 12 !important;
+}
+html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero__copy {
+  position: relative !important;
+  z-index: 12 !important;
+  box-sizing: border-box !important;
+  width: min(48%,660px) !important;
+  max-width: 660px !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 64px 30px 74px 0 !important;
+}
+html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero__copy :is(h1,h2) {
+  max-width: 620px !important;
+  font-size: clamp(46px,4vw,62px) !important;
+  line-height: .98 !important;
+}
+html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero__media {
+  position: absolute !important;
+  z-index: 1 !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: auto !important;
+  width: 72% !important;
+  height: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #eef2f5 !important;
+}
+html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero__media::after {
+  content: "" !important;
+  display: block !important;
+  position: absolute !important;
+  z-index: 4 !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+  background: linear-gradient(90deg,#fff 0%,rgba(255,255,255,.995) 9%,rgba(255,255,255,.94) 19%,rgba(255,255,255,.72) 30%,rgba(255,255,255,.36) 40%,rgba(255,255,255,.11) 49%,rgba(255,255,255,0) 59%) !important;
+}
+html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero__media img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100% !important;
+  min-height: 520px !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  filter: none !important;
+  transform: none !important;
+  image-rendering: auto !important;
+}
+
+/* Exact compact pager treatment used by the Travel ownership layer. The
+ * all/reset-style declarations stop broad theme button rules inflating dots. */
+html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero__pagination {
+  box-sizing: border-box !important;
+  position: absolute !important;
+  z-index: 160 !important;
+  left: 50% !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  width: max-content !important;
+  min-width: 0 !important;
+  max-width: calc(100% - 32px) !important;
+  min-height: 28px !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 6px 10px !important;
+  border: 1px solid rgba(16,44,87,.10) !important;
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.95) !important;
+  box-shadow: 0 7px 20px rgba(15,35,69,.12) !important;
+  transform: translateX(-50%) !important;
+  backdrop-filter: blur(7px);
+}
+html body.wpbb-v143-theme-realestate #wp-theme-main button.wpbb-re142-hero__bullet {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  flex: 0 0 auto !important;
+  width: 8px !important;
+  height: 8px !important;
+  min-width: 8px !important;
+  min-height: 8px !important;
+  max-width: 8px !important;
+  max-height: 8px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: #c8d8d2 !important;
+  box-shadow: none !important;
+  outline-offset: 3px !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  cursor: pointer !important;
+  transform: none !important;
+  transition: width .18s ease, max-width .18s ease, background-color .18s ease !important;
+}
+html body.wpbb-v143-theme-realestate #wp-theme-main button.wpbb-re142-hero__bullet.is-active {
+  width: 24px !important;
+  max-width: 24px !important;
+  background: var(--wpbb-re142-primary,#0b8f67) !important;
+}
+html body.wpbb-v143-theme-realestate #wp-theme-main button.wpbb-re142-hero__bullet:hover {
+  background: #8fc9b6 !important;
+}
+html body.wpbb-v143-theme-realestate #wp-theme-main button.wpbb-re142-hero__bullet.is-active:hover {
+  background: var(--wpbb-re142-primary-dark,#087653) !important;
+}
+
+@media (max-width: 799.98px) {
+  html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero,
+  html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero__viewport,
+  html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re143-hero__track,
+  html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero__slide[data-wpbb-re143-ready="1"] {
+    min-height: 0 !important;
+  }
+  html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero__slide[data-wpbb-re143-ready="1"] {
+    display: block !important;
+  }
+  html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero__inner {
+    min-height: 0 !important;
+  }
+  html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero__copy {
+    width: 100% !important;
+    max-width: 680px !important;
+    padding: 42px 0 58px !important;
+  }
+  html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero__copy :is(h1,h2) {
+    font-size: clamp(38px,9vw,52px) !important;
+  }
+  html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero__media {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: 320px !important;
+  }
+  html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero__media::after {
+    display: none !important;
+  }
+  html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero__media img {
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+}
+@media (max-width: 639.98px) {
+  html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re142-hero__media {
+    height: 270px !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html body.wpbb-v143-theme-realestate #wp-theme-main .wpbb-re143-hero__track {
+    transition: none !important;
+  }
+  html body.wpbb-v143-theme-realestate #wp-theme-main button.wpbb-re142-hero__bullet {
+    transition: none !important;
+  }
+}

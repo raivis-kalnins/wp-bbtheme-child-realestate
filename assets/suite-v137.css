@@ -1,0 +1,184 @@
+/* 3.8.11.37 real-estate visual consistency: one shell, one card grid rhythm and crisp media. */
+:root{
+  --wpbb-v137-shell:1180px;
+  --wpbb-v137-gap:24px;
+  --wpbb-v137-media-ratio:4/3;
+}
+
+/* All non-hero content that v137 marks as a shell uses the same visual edge. */
+html body.wpbb-v137-theme-realestate #wp-theme-main .wpbb-v137-shell{
+  box-sizing:border-box!important;
+  width:min(calc(100% - 48px),var(--wpbb-v137-shell))!important;
+  max-width:var(--wpbb-v137-shell)!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+html body.wpbb-v137-theme-realestate #wp-theme-main .wpbb-v136-process-shell{
+  width:min(calc(100% - 48px),var(--wpbb-v137-shell))!important;
+  max-width:var(--wpbb-v137-shell)!important;
+}
+
+/* A single responsive grid model for cards, posts, listings and proof blocks. */
+html body.wpbb-v137-theme-realestate #wp-theme-main .wpbb-v137-grid{
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:var(--wpbb-v137-gap)!important;
+  align-items:stretch!important;
+  width:100%!important;
+  max-width:none!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  padding-left:0!important;
+  padding-right:0!important;
+  list-style:none!important;
+}
+html body.wpbb-v137-theme-realestate #wp-theme-main .wpbb-v137-grid>.wpbb-v137-grid-cell{
+  box-sizing:border-box!important;
+  float:none!important;
+  min-width:0!important;
+  width:auto!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  flex:none!important;
+}
+html body.wpbb-v137-theme-realestate #wp-theme-main .wpbb-v137-grid>.wpbb-v137-grid-cell>*{
+  max-width:100%!important;
+}
+@media(min-width:720px){
+  html body.wpbb-v137-theme-realestate #wp-theme-main .wpbb-v137-grid:is(.wpbb-v137-cols-2,.wpbb-v137-cols-3,.wpbb-v137-cols-4){
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
+@media(min-width:1040px){
+  html body.wpbb-v137-theme-realestate #wp-theme-main .wpbb-v137-grid.wpbb-v137-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  html body.wpbb-v137-theme-realestate #wp-theme-main .wpbb-v137-grid.wpbb-v137-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  html body.wpbb-v137-theme-realestate #wp-theme-main .wpbb-v137-grid.wpbb-v137-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+}
+
+/* v136 hard-coded four stats columns. v137 follows the actual number of cards. */
+html body.wpbb-v137-theme-realestate #wp-theme-main .wpbb-v136-stats-grid.wpbb-v137-grid{
+  gap:var(--wpbb-v137-gap)!important;
+}
+
+/* Equal-height cards so each row has a clean baseline. */
+html body.wpbb-v137-theme-realestate #wp-theme-main .wpbb-v137-grid :is(
+  .wp-theme-property-card,
+  .wp-theme-sector-card,
+  .wp-theme-case-card,
+  .wp-theme-blog-card,
+  .wp-theme-blog-list-card,
+  .wp-theme-project-card,
+  .wp-theme-gallery-card,
+  .wpbb-directory-card
+){
+  box-sizing:border-box!important;
+  width:100%!important;
+  max-width:none!important;
+  height:100%!important;
+  margin:0!important;
+}
+html body.wpbb-v137-theme-realestate #wp-theme-main .wp-theme-property-grid:not(.is-list) .wp-theme-property-card{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+}
+html body.wpbb-v137-theme-realestate #wp-theme-main .wp-theme-property-card__body{
+  display:flex!important;
+  flex:1 1 auto!important;
+  flex-direction:column!important;
+}
+html body.wpbb-v137-theme-realestate #wp-theme-main .wp-theme-property-card__facts{
+  margin-top:auto!important;
+}
+
+/* One card-media ratio and crop across listing/editorial/gallery sections. */
+html body.wpbb-v137-theme-realestate #wp-theme-main img.wpbb-v137-grid-image{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  height:auto!important;
+  aspect-ratio:var(--wpbb-v137-media-ratio)!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  opacity:1!important;
+  filter:none!important;
+  image-rendering:auto!important;
+  transform:none!important;
+}
+html body.wpbb-v137-theme-realestate #wp-theme-main .wp-theme-property-card__image{
+  display:block!important;
+  width:100%!important;
+  aspect-ratio:var(--wpbb-v137-media-ratio)!important;
+  overflow:hidden!important;
+}
+html body.wpbb-v137-theme-realestate #wp-theme-main .wp-theme-property-card__image img.wpbb-v137-grid-image{
+  height:100%!important;
+}
+html body.wpbb-v137-theme-realestate #wp-theme-main .wp-theme-property-card:hover .wp-theme-property-card__image img.wpbb-v137-grid-image{
+  transform:none!important;
+}
+
+/* Feature/gallery media follows the same crop without changing hero proportions. */
+html body.wpbb-v137-theme-realestate #wp-theme-main :is(
+  .wp-theme-sector-media-text__media,
+  .wp-theme-sector-page-image,
+  .wp-theme-gallery-section .wpbb-swiper-slide__media
+) img.wpbb-v137-feature-image{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  height:auto!important;
+  aspect-ratio:var(--wpbb-v137-media-ratio)!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  opacity:1!important;
+  filter:none!important;
+  image-rendering:auto!important;
+}
+
+/* Keep the hero exempt from the card crop but remove rendering filters. */
+html body.wpbb-v137-theme-realestate #wp-theme-main .wpbb-v136-hero :is(.wpbb-swiper-slide__media,.wp-theme-hero__media,.wpbb-hero-media) img,
+html body.wpbb-v137-theme-realestate #wp-theme-main .wpbb-v136-hero .wpbb-v136-hero-image{
+  filter:none!important;
+  image-rendering:auto!important;
+}
+
+
+/* Preserve the deliberate list-view layout when visitors switch the property results view. */
+html body.wpbb-v137-theme-realestate #wp-theme-main .wp-theme-property-grid.is-list.wpbb-v137-grid{
+  grid-template-columns:minmax(0,1fr)!important;
+}
+html body.wpbb-v137-theme-realestate #wp-theme-main .wp-theme-property-grid.is-list .wp-theme-property-card{
+  display:grid!important;
+  grid-template-columns:320px minmax(0,1fr)!important;
+}
+html body.wpbb-v137-theme-realestate #wp-theme-main .wp-theme-property-grid.is-list .wp-theme-property-card__image{
+  height:100%!important;
+  aspect-ratio:auto!important;
+}
+html body.wpbb-v137-theme-realestate #wp-theme-main .wp-theme-property-grid.is-list .wp-theme-property-card__image img.wpbb-v137-grid-image{
+  height:100%!important;
+  aspect-ratio:auto!important;
+}
+@media(max-width:767.98px){
+  html body.wpbb-v137-theme-realestate #wp-theme-main .wp-theme-property-grid.is-list .wp-theme-property-card{grid-template-columns:minmax(0,1fr)!important}
+  html body.wpbb-v137-theme-realestate #wp-theme-main .wp-theme-property-grid.is-list .wp-theme-property-card__image{aspect-ratio:var(--wpbb-v137-media-ratio)!important}
+  html body.wpbb-v137-theme-realestate #wp-theme-main .wp-theme-property-grid.is-list .wp-theme-property-card__image img.wpbb-v137-grid-image{aspect-ratio:var(--wpbb-v137-media-ratio)!important}
+}
+
+/* Search/listing section shares the same shell and grid gap as the rest of the page. */
+html body.wpbb-v137-theme-realestate #wp-theme-main .wp-theme-property-grid:not(.is-list){
+  gap:var(--wpbb-v137-gap)!important;
+}
+html body.wpbb-v137-theme-realestate #wp-theme-main>.wp-theme-property-finder.wpbb-v137-shell{
+  margin-bottom:72px!important;
+}
+
+@media(max-width:719px){
+  html body.wpbb-v137-theme-realestate #wp-theme-main .wpbb-v137-shell,
+  html body.wpbb-v137-theme-realestate #wp-theme-main .wpbb-v136-process-shell{
+    width:min(calc(100% - 32px),var(--wpbb-v137-shell))!important;
+  }
+}
